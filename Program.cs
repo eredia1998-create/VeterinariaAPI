@@ -15,11 +15,12 @@ var siguienteId = 1;
 app.MapPost("/mascotas", (CrearMascotaDto dto) =>
 {
 if (string.IsNullOrWhiteSpace(dto.Nombre) ||
-string.IsNullOrWhiteSpace(dto.Especie) ||
-string.IsNullOrWhiteSpace(dto.Raza) ||
-string.IsNullOrWhiteSpace(dto.Sexo) ||
-string.IsNullOrWhiteSpace(dto.Propietario) ||
-dto.Edad < 0 || dto.Edad > 100)
+    string.IsNullOrWhiteSpace(dto.Especie) ||
+    string.IsNullOrWhiteSpace(dto.Raza) ||
+    string.IsNullOrWhiteSpace(dto.Sexo) ||
+    string.IsNullOrWhiteSpace(dto.Propietario) ||
+    string.IsNullOrWhiteSpace(dto.TelefonoPropietario) ||
+    dto.Edad < 0 || dto.Edad > 100)
 {
 return Results.BadRequest(new
 {
@@ -35,7 +36,8 @@ var mascota = new Mascota
     Raza = dto.Raza.Trim(),
     Edad = dto.Edad,
     Sexo = dto.Sexo.Trim(),
-    Propietario = dto.Propietario.Trim()
+    Propietario = dto.Propietario.Trim(),
+    TelefonoPropietario = dto.TelefonoPropietario.Trim()
 };
 
 mascotas.Add(mascota);
@@ -100,7 +102,8 @@ if (string.IsNullOrWhiteSpace(dto.Nombre) ||
     string.IsNullOrWhiteSpace(dto.Especie) ||
     string.IsNullOrWhiteSpace(dto.Raza) ||
     string.IsNullOrWhiteSpace(dto.Sexo) ||
-    string.IsNullOrWhiteSpace(dto.Propietario) ||
+       string.IsNullOrWhiteSpace(dto.Propietario) ||
+    string.IsNullOrWhiteSpace(dto.TelefonoPropietario) ||
     dto.Edad < 0 || dto.Edad > 100)
 {
     return Results.BadRequest(new
@@ -115,7 +118,7 @@ mascota.Raza = dto.Raza.Trim();
 mascota.Edad = dto.Edad;
 mascota.Sexo = dto.Sexo.Trim();
 mascota.Propietario = dto.Propietario.Trim();
-
+mascota.TelefonoPropietario = dto.TelefonoPropietario.Trim();
 return Results.Ok(mascota);
 
 });
@@ -138,6 +141,7 @@ if ((dto.Nombre is not null && string.IsNullOrWhiteSpace(dto.Nombre)) ||
     (dto.Raza is not null && string.IsNullOrWhiteSpace(dto.Raza)) ||
     (dto.Sexo is not null && string.IsNullOrWhiteSpace(dto.Sexo)) ||
     (dto.Propietario is not null && string.IsNullOrWhiteSpace(dto.Propietario)) ||
+    (dto.TelefonoPropietario is not null && string.IsNullOrWhiteSpace(dto.TelefonoPropietario)) ||
     (dto.Edad.HasValue && (dto.Edad.Value < 0 || dto.Edad.Value > 100)))
 {
     return Results.BadRequest(new
@@ -151,12 +155,14 @@ if (dto.Especie is not null) mascota.Especie = dto.Especie.Trim();
 if (dto.Raza is not null) mascota.Raza = dto.Raza.Trim();
 if (dto.Edad.HasValue) mascota.Edad = dto.Edad.Value;
 if (dto.Sexo is not null) mascota.Sexo = dto.Sexo.Trim();
-if (dto.Propietario is not null) mascota.Propietario = dto.Propietario.Trim();
+if (dto.Propietario is not null)
+    mascota.Propietario = dto.Propietario.Trim();
 
+if (dto.TelefonoPropietario is not null)
+    mascota.TelefonoPropietario = dto.TelefonoPropietario.Trim();
 return Results.Ok(mascota);
 
 });
-
 // DELETE: Eliminar una mascota.
 app.MapDelete("/mascotas/{id:int}", (int id) =>
 {
